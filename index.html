@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Weather app</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="container" class="container">
+      <div class="app-body">
+        <section class="mainbox flex">
+          <h1>Weather App</h1>
+          <!-- input error -->
+          <div id="input-error" class="input-error"></div>
+          <!-- search section -->
+          <div class="search-container">
+            <input type="text" name="search" id="input-value" placeholder="City Name" autofocus autocomplete="off"/>
+            <button class="button" id="submit"><ion-icon class="button-icon"name="search"></ion-icon></button>
+          </div>
+          <div class="box">
+        
+            <!-- temperatures -->
+            <div class="temp-box">
+              <!-- main temp -->
+              <span id="temp" class="temp main">18&deg;C</span>
+              <!-- small temps -->
+              <div class="temp-minor flex-row">
+                <!-- feel -->
+                <div class="minor">
+                  <ion-icon class="icn icn-leaf" name="leaf"></ion-icon>
+                  <span id="feel" class="temp minor">16&deg;C</span>
+                </div>
+                <!-- minor -->
+                <div class="minor">
+                  <ion-icon class="icn icn-min" name="caret-up-outline"></ion-icon>
+                <span id="min" class="temp minor">14&deg;C</span>
+                </div>
+                <!-- max -->
+                <div class="minor">
+                  <ion-icon class="icn icn-max" name="caret-down-outline"></ion-icon>
+                <span id="max" class="temp minor">21&deg;C</span>
+                </div>
+              </div>
+            </div>
+            <div class="visual">            
+              <!-- <img src="http://openweathermap.org/img/wn/10d@2x.png" id="conditions" class="img"></img> -->
+              <img src="./img/10d.png" id="conditions" class="img"></img> 
+              <div class="sunny-container">
+                <ion-icon name="sunny"></ion-icon>
+                <div id='sunrise' class="sunrise">05:05</div>
+                <ion-icon name="moon"></ion-icon>
+                <div id='sunset' class="sunset">15:05</div>
+              </div>         
+            </div>
+          </div>
+          <!-- city -->
+          <div id="clock" class="clock"></div>
+          <div class="location-container">    
+            <div id="city" class="city-name">Oława </div>
+           <span id="country">PL</span>
+          </div>
+      
+        </section>
+        <!-- section details -->
+        <section id="details" class="details-section
+        ">
+          <div class="details-container">
+            <!-- wind -->
+            <div class="small-par">
+              <ion-icon id="wind-dir" class="details-icon" name="navigate"></ion-icon>
+              <div id="wind-speed" class="details wind-speed">100</div>
+            </div>
+              <!-- pressure -->
+            <div class="small-par">
+              <ion-icon class="details-icon" name="timer"></ion-icon>           
+              <div id="pressure" class="details pressure">1040 hPa</div>
+            </div>
+            <!-- whumidity -->
+            <div class="small-par">
+              <ion-icon class="details-icon hum" name="water"></ion-icon>
+              <div id="humidity" class="details humidity">60%</div>
+            </div>
+                
+        </div>
+        </section>
+
+        <footer>Copyrights M.A.</footer>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</html>
