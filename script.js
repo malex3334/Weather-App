@@ -16,6 +16,19 @@ const sunriseEl = document.getElementById("sunrise");
 const sunsetEl = document.getElementById("sunset");
 const clockEl = document.getElementById("clock");
 
+const msToHMS = function (duration) {
+  var miliseconds = parseInt((duration % 1000) / 100),
+    seconds = parseInt((duration / 1000) % 60),
+    minutes = parseInt((duration / (1000 * 60)) % 60),
+    hours = parseInt((duration * 60 * 60) % 24);
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds;
+};
+
 let apiKey = "fb574912b0999ba535af23dc7e4332dd";
 
 let units = "metric";
@@ -54,6 +67,29 @@ function getWeather(city) {
       countryEl.innerHTML = country;
 
       timeConverter(sunriseTZ, sunsetTZ);
+
+      var today = new Date();
+
+      var UTCstring = today.toUTCString();
+      console.log(UTCstring);
+
+      function ticker() {
+        new Date().toTimeString().slice(0, 8);
+        console.log(new Date().toTimeString().slice(0, 8));
+        clockEl.innerHTML = new Date().toTimeString().slice(0, 8);
+      }
+
+      var myTimer = window.setInterval(ticker, 1000);
+
+      inputValue.addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+          window.clearInterval(myTimer);
+        } else return;
+      });
+
+      submitBtn.addEventListener("click", () => {
+        window.clearInterval(myTimer);
+      });
     })
 
     .catch((err) => {
@@ -91,11 +127,10 @@ getWeather("wroclaw");
 // sunrise & sunset function
 const timeConverter = function (sunrise, sunset) {
   let date = new Date((sunrise - 3600) * 1000);
-  console.log(date);
+
   let hours = date.getHours();
-  console.log(hours);
   let minutes = "0" + date.getMinutes();
-  console.log(minutes);
+
   // const seconds = "0" + date.getSeconds();
   let formattedSunrise = `${hours}:${minutes.substr(-2)}`;
 
