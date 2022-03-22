@@ -257,6 +257,12 @@ input::placeholder {
   margin-top: 0.5rem;
 }
 
+.clocks {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-around;
+}
+
 .clock {
   font-size: 2.5rem;
   letter-spacing: 4px;

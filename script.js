@@ -1,4 +1,5 @@
 "use strict";
+
 const inputValue = document.getElementById("input-value");
 const submitBtn = document.getElementById("submit");
 const tempEl = document.getElementById("temp");
@@ -15,6 +16,7 @@ const countryEl = document.getElementById("country");
 const sunriseEl = document.getElementById("sunrise");
 const sunsetEl = document.getElementById("sunset");
 const clockEl = document.getElementById("clock");
+const localClockEl = document.getElementById("local-clock");
 
 const msToHMS = function (duration) {
   var miliseconds = parseInt((duration % 1000) / 100),
@@ -68,15 +70,25 @@ function getWeather(city) {
 
       timeConverter(sunriseTZ, sunsetTZ);
 
-      var today = new Date();
-
-      var UTCstring = today.toUTCString();
-      console.log(UTCstring);
+      const myDate = new Date();
+      const newDate = new Date(myDate);
+      newDate.setHours(newDate.getHours() + 1);
 
       function ticker() {
-        new Date().toTimeString().slice(0, 8);
-        console.log(new Date().toTimeString().slice(0, 8));
-        clockEl.innerHTML = new Date().toTimeString().slice(0, 8);
+        const myDate = new Date();
+        const newDate = new Date(myDate);
+        newDate.setHours(newDate.getHours() - 1);
+        newDate.setHours(newDate.getHours() + timezone / 60 / 60);
+
+        if (myDate.getHours() !== newDate.getHours()) {
+          clockEl.textContent = myDate.toTimeString().slice(0, 8);
+          clockEl.style.marginRight = "2rem";
+          localClockEl.textContent = newDate.toTimeString().slice(0, 8);
+        } else {
+          localClockEl.textContent = "";
+          clockEl.style.marginRight = "0";
+          clockEl.textContent = myDate.toTimeString().slice(0, 8);
+        }
       }
 
       var myTimer = window.setInterval(ticker, 1000);
