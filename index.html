@@ -50,28 +50,29 @@
               </div>
             </div>
             <div class="visual">            
-              <!-- <img src="http://openweathermap.org/img/wn/10d@2x.png" id="conditions" class="img"></img> -->
+
               <img src="./img/10d.png" id="conditions" class="img"></img> 
               <div class="sunny-container">
-                <ion-icon name="sunny"></ion-icon>
+                <ion-icon id="sunny-icn" name="sunny"></ion-icon>
                 <div id='sunrise' class="sunrise">05:05</div>
-                <ion-icon name="moon"></ion-icon>
+                <ion-icon id="sunset-icn" name="moon"></ion-icon>
                 <div id='sunset' class="sunset">15:05</div>
               </div>         
             </div>
           </div>
           <!-- city -->
-          <div class="clocks">
-          
+          <div class="clocks">      
             <div id="clock" class="clock"></div>
-            
-            <div id="local-clock" class="clock"></div>
           </div>
   
           <div class="location-container">    
             <div id="city" class="city-name">Oława </div>
            <span id="country">PL</span>
           </div>
+          <div id="local-time-container" class="local-time-container ">
+            <div id="local-clock" class="clock local-clock"></div>
+            <div id="local-time" class="clock local-clock "></div>
+            </div>
       
         </section>
         <!-- section details -->
