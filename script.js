@@ -42,7 +42,6 @@ function getWeather(city) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       // return;
       const city = data.name;
       const { name, temp, pressure, humidity, feels_like, temp_max, temp_min } =
@@ -54,7 +53,6 @@ function getWeather(city) {
       const processedName = data.name;
       const sunriseTZ = sunrise + timezone;
       const sunsetTZ = sunset + timezone;
-      console.log(timezone);
 
       tempEl.innerHTML = Math.round(temp) + "&deg;";
       tempFeelEl.innerHTML = Math.round(feels_like) + "&deg;";
@@ -73,12 +71,15 @@ function getWeather(city) {
 
       const myDate = new Date();
       const newDate = new Date(myDate);
-      newDate.setHours(newDate.getHours() + 1);
+      newDate.setHours(newDate.getHours());
 
       function ticker() {
         const myDate = new Date();
         const newDate = new Date(myDate);
-        newDate.setHours(myDate.getHours() - 1);
+        newDate.setHours(
+          myDate.getHours() - myDate.toTimeString().slice(12, 15)
+        );
+
         newDate.setHours(newDate.getHours() + timezone / 60 / 60);
 
         if (myDate.getHours() !== newDate.getHours()) {
