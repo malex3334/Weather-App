@@ -51,8 +51,6 @@ function getWeather(city) {
       const icon = data.weather[0].icon;
       const timezone = data.timezone;
       const processedName = data.name;
-      const sunriseTZ = sunrise + timezone;
-      const sunsetTZ = sunset + timezone;
 
       tempEl.innerHTML = Math.round(temp) + "&deg;";
       tempFeelEl.innerHTML = Math.round(feels_like) + "&deg;";
@@ -67,11 +65,15 @@ function getWeather(city) {
       document.body.style.backgroundImage = `url(' https://source.unsplash.com/1200x720/?${processedName}')`;
       countryEl.innerHTML = country;
 
-      timeConverter(sunriseTZ, sunsetTZ);
-
       const myDate = new Date();
       const newDate = new Date(myDate);
       newDate.setHours(newDate.getHours());
+      console.log(myDate.toTimeString().slice(13, 15));
+
+      const sunriseTZ = sunrise + timezone - 3600;
+      const sunsetTZ = sunset + timezone - 3600;
+
+      timeConverter(sunriseTZ, sunsetTZ);
 
       function ticker() {
         const myDate = new Date();
