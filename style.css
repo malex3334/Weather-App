@@ -270,6 +270,9 @@ input::placeholder {
   letter-spacing: 4px;
 }
 
+#clock {
+  height: 2.5rem;
+}
 .local-clock {
   font-size: 1.25rem;
   text-transform: uppercase;

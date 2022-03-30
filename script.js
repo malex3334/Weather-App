@@ -160,3 +160,7 @@ const timeConverter = function (sunrise, sunset) {
 
   sunsetEl.innerHTML = formattedSunset;
 };
+
+window.addEventListener("load", () => {
+  console.log("loaded");
+});
