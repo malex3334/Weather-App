@@ -40,7 +40,10 @@ function getWeather(city) {
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) throw new Error(`error: ${response.status}`);
+      return response.json();
+    })
     .then((data) => {
       // return;
       const city = data.name;
@@ -68,7 +71,6 @@ function getWeather(city) {
       const myDate = new Date();
       const newDate = new Date(myDate);
       newDate.setHours(newDate.getHours());
-      console.log(myDate.toTimeString().slice(13, 15));
 
       const sunriseTZ = sunrise + timezone - 3600;
       const sunsetTZ = sunset + timezone - 3600;
@@ -160,7 +162,3 @@ const timeConverter = function (sunrise, sunset) {
 
   sunsetEl.innerHTML = formattedSunset;
 };
-
-window.addEventListener("load", () => {
-  console.log("loaded");
-});
