@@ -8,9 +8,8 @@
     <title>Weather app</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
 
     <script defer src="script.js"></script>
   </head>
@@ -73,7 +72,7 @@
           </div>
           <div id="local-time-container" class="local-time-container ">
             <div id="local-clock" class="clock local-clock"></div>
-            <div id="local-time" class="clock local-clock "></div>
+            <!-- <div id="local-time" class="clock local-clock "></div> -->
             </div>
       
         </section>
@@ -96,8 +95,18 @@
               <ion-icon class="details-icon hum" name="water"></ion-icon>
               <div id="humidity" class="details humidity">60%</div>
             </div>
-                
-        </div>
+            
+          </div>
+          <!-- air pollution section -->
+          <div id="air-pollution-container" class="details-container">
+            <div id="air-pollution"class="details">Air</div>
+            <div class="details">
+              <div class="progress-bar">
+                <div id="air-progress" class="current-progress air"></div>
+              </div>
+            </div>
+            <ion-icon id="air-icon"name="skull"></ion-icon>
+          </div>
         </section>
 
         <footer>Copyrights M.A.</footer>
