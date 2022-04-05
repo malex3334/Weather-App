@@ -21,6 +21,8 @@ const localTimeEl = document.getElementById("local-time-container");
 const airPollutionEl = document.getElementById("air-pollution");
 const airProgressEl = document.getElementById("air-progress");
 const airPollutionIcn = document.getElementById("air-icon");
+const testing = document.querySelector(".testing");
+const forecastSectionEl = document.getElementById("forecast");
 
 let lat;
 let lon;
@@ -140,6 +142,9 @@ function getWeather(city) {
         });
       // GET AIR POLLUTION DATA
       getAir();
+      // RESET FORECAST DIV!
+      forecastSectionEl.innerHTML = "";
+      getDailyForecast();
     });
 }
 
@@ -163,9 +168,19 @@ inputValue.addEventListener("keydown", (e) => {
   } else return;
 });
 
-countryEl.addEventListener("click", () => {
-  document.getElementById("details").classList.toggle("hide");
-});
+document
+  .getElementById("forecast-details-btn--left")
+  .addEventListener("click", () => {
+    document.getElementById("details").classList.toggle("hide-details");
+    forecastSectionEl.classList.toggle("hide-forecast");
+  });
+
+document
+  .getElementById("forecast-details-btn--right")
+  .addEventListener("click", () => {
+    document.getElementById("details").classList.toggle("hide-details");
+    forecastSectionEl.classList.toggle("hide-forecast");
+  });
 
 getWeather("wroclaw");
 
@@ -202,6 +217,41 @@ function getAir() {
         airProgressEl.style.width = "100%";
         airProgressEl.style.backgroundColor = "purple";
         airPollutionIcn.name = "skull";
+      }
+    });
+}
+
+// FORECAST FUNCTION
+function getDailyForecast() {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly&appid=${apiKey}&units=metric`
+  )
+    .then((response) => response.json())
+    .then((forecastData) => {
+      let i = 1;
+      for (let i = 1; i < 4; i++) {
+        console.log(forecastData.daily[i]);
+        const dayForecast = forecastData.daily[i].temp.night;
+        const { day, night } = forecastData.daily[i].temp;
+        const { dt } = forecastData.daily[i];
+        const { icon } = forecastData.daily[i].weather[0];
+        const forecastDay = new Date(forecastData.daily[i].dt * 1000);
+        const forecastDayString = forecastDay.toString().slice(4, 11);
+        console.log(forecastDayString);
+
+        const htmlTemplate = `<div id="forecast-single" class="forecast-day">
+        <h4 class="forecast-title">${forecastDayString}</h4>
+        <img src="./img/${icon}.png" id="conditions" class="img forecast"></img>
+        <div class="forecast-temp">
+          <ion-icon id="sunny-icn"  class="forecast-icon-small" name="sunny"></ion-icon>
+          <div id='forecast-day' class="sunrise">${Math.floor(day)}&deg;</div>
+          <ion-icon id="sunset-icn" class="forecast-icon-small"  name="moon"></ion-icon>
+          <div id='forecast-night' class="sunset">${Math.floor(
+            night
+          )}&deg;</div>
+        </div>
+        </div>`;
+        forecastSectionEl.innerHTML += htmlTemplate;
       }
     });
 }

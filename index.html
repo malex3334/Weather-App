@@ -16,13 +16,16 @@
   <body>
     <div id="container" class="container">
       <div class="app-body">
+        <div id="forecast-details-btn--left" class="forecast-details-btn"><ion-icon name="arrow-back-circle"></ion-icon></div>
+        <div id="forecast-details-btn--right" class="forecast-details-btn"><ion-icon name="arrow-forward-circle"></ion-icon></div>
         <section id="mainbox" class="mainbox flex">
+          <div class="testing"></div>
           <h1>Weather App</h1>
           <!-- input error -->
           <div id="input-error" class="input-error"></div>
           <!-- search section -->
           <div class="search-container">
-            <input type="text" name="search" id="input-value" placeholder="City Name" autofocus autocomplete="off"/>
+            <input type="text" name="search" id="input-value" placeholder="City Name, country code" autofocus autocomplete="off"/>
             <button class="button" id="submit"><ion-icon class="button-icon"name="search"></ion-icon></button>
           </div>
           <div class="box">
@@ -77,6 +80,8 @@
       
         </section>
         <!-- section details -->
+        <div class="sections-wrapper">
+
         <section id="details" class="details-section
         ">
           <div class="details-container">
@@ -109,6 +114,22 @@
           </div>
         </section>
 
+        <section id="forecast" class="forecast-section hide-forecast">
+
+          <!-- day -->
+          <!-- <div id="forecast-single" class="forecast-day">
+            <h4 class="forecast-title">Day + 1</h4>
+            <img src="./img/10d.png" id="conditions" class="img forecast"></img>
+            <div class="forecast-temp">
+              <ion-icon id="sunny-icn" name="sunny"></ion-icon>
+              <div id='forecast-day' class="sunrise">5&deg;</div>
+              <ion-icon id="sunset-icn" name="moon"></ion-icon>
+              <div id='forecast-night' class="sunset">5&deg;</div>
+            </div>
+          </div> -->
+          <!-- day end -->
+        </section>
+      </div>
         <footer>Copyrights M.A.</footer>
       </div>
     </div>
