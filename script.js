@@ -30,7 +30,7 @@ let units = "metric";
 
 function getWeather(city) {
   fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
+    `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
   )
     .then((response) => {
       if (!response.ok) throw new Error(`error ${response.status}`);
@@ -173,7 +173,7 @@ getWeather("wroclaw");
 
 function getAir() {
   fetch(
-    `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`
+    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`
   )
     .then((response) => response.json())
     .then((airData) => {
