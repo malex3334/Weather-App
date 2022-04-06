@@ -19,10 +19,12 @@ const clockEl = document.getElementById("clock");
 const localClockEl = document.getElementById("local-clock");
 const localTimeEl = document.getElementById("local-time-container");
 const airPollutionEl = document.getElementById("air-pollution");
+const airPollutionContainer = document.getElementById("loader");
 const airProgressEl = document.getElementById("air-progress");
 const airPollutionIcn = document.getElementById("air-icon");
 const testing = document.querySelector(".testing");
 const forecastSectionEl = document.getElementById("forecast");
+const loader = document.querySelector(".loader");
 
 let lat;
 let lon;
@@ -31,19 +33,30 @@ let apiKey = "fb574912b0999ba535af23dc7e4332dd";
 let units = "metric";
 
 function getWeather(city) {
+  // loader animation
+  loader.classList.add("show-loader");
+  // fetching data
   fetch(
     `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
   )
     .then((response) => {
       if (!response.ok) throw new Error(`error ${response.status}`);
+      loader.classList.remove("show-loader");
       return response.json();
     })
     .then((cityData) => {
       lat = cityData[0].lat;
       lon = cityData[0].lon;
       cityName = cityData[0].name;
-
-      return lat;
+    })
+    .catch((err) => {
+      console.log("City not found");
+      document.getElementById("input-error").innerHTML =
+        "Brak takiego miasta w bazie";
+      setTimeout(() => {
+        document.getElementById("input-error").innerHTML = "";
+      }, 3000);
+      return response.json();
     })
     .then(() => {
       // GET WEATHER BASED ON GEOCODE
@@ -52,22 +65,16 @@ function getWeather(city) {
       )
         .then((response) => {
           if (!response.ok) throw new Error(`error: ${response.status}`);
+
           return response.json();
         })
         .then((data) => {
           // DESTRUCTURING OUTPUT
 
-          const city = data.name;
-          const {
-            name,
-            temp,
-            pressure,
-            humidity,
-            feels_like,
-            temp_max,
-            temp_min,
-          } = data.main;
-          const { gust, speed, deg } = data.wind;
+          // const city = data.name;
+          const { temp, pressure, humidity, feels_like, temp_max, temp_min } =
+            data.main;
+          const { speed, deg } = data.wind;
           const { country, sunrise, sunset } = data.sys;
           const icon = data.weather[0].icon;
           const timezone = data.timezone;
@@ -130,25 +137,24 @@ function getWeather(city) {
           submitBtn.addEventListener("click", () => {
             window.clearInterval(myTimer);
           });
-        })
-
-        .catch((err) => {
-          console.log("City not found");
-          document.getElementById("input-error").innerHTML =
-            "Brak takiego miasta w bazie";
-          setTimeout(() => {
-            document.getElementById("input-error").innerHTML = "";
-          }, 3000);
         });
+
+      // .catch((err) => {
+      //   console.log("City not found");
+      //   document.getElementById("input-error").innerHTML =
+      //     "Brak takiego miasta w bazie";
+      //   setTimeout(() => {
+      //     document.getElementById("input-error").innerHTML = "";
+      //   }, 3000);
+      // });
       // GET AIR POLLUTION DATA
       getAir();
       // RESET FORECAST DIV!
       forecastSectionEl.innerHTML = "";
+      // GET FORECAST FUNCTION
       getDailyForecast();
     });
 }
-
-let cityName = "";
 
 //  SUBMIT SEARCH INPUT VIA SEARCH BUTTON
 
@@ -182,6 +188,7 @@ document
     forecastSectionEl.classList.toggle("hide-forecast");
   });
 
+let cityName = "";
 getWeather("wroclaw");
 
 // GET CEOLOCATION BY INPUTET
@@ -218,6 +225,9 @@ function getAir() {
         airProgressEl.style.backgroundColor = "purple";
         airPollutionIcn.name = "skull";
       }
+    })
+    .catch((err) => {
+      console.log("air pollution", err);
     });
 }
 
@@ -230,29 +240,33 @@ function getDailyForecast() {
     .then((forecastData) => {
       let i = 1;
       for (let i = 1; i < 4; i++) {
-        console.log(forecastData.daily[i]);
-        const dayForecast = forecastData.daily[i].temp.night;
         const { day, night } = forecastData.daily[i].temp;
-        const { dt } = forecastData.daily[i];
         const { icon } = forecastData.daily[i].weather[0];
         const forecastDay = new Date(forecastData.daily[i].dt * 1000);
         const forecastDayString = forecastDay.toString().slice(4, 11);
-        console.log(forecastDayString);
-
-        const htmlTemplate = `<div id="forecast-single" class="forecast-day">
-        <h4 class="forecast-title">${forecastDayString}</h4>
-        <img src="./img/${icon}.png" id="conditions" class="img forecast"></img>
-        <div class="forecast-temp">
-          <ion-icon id="sunny-icn"  class="forecast-icon-small" name="sunny"></ion-icon>
-          <div id='forecast-day' class="sunrise">${Math.floor(day)}&deg;</div>
-          <ion-icon id="sunset-icn" class="forecast-icon-small"  name="moon"></ion-icon>
-          <div id='forecast-night' class="sunset">${Math.floor(
-            night
-          )}&deg;</div>
+        const dayOfWeek = forecastDay.toString().slice(0, 3);
+        const htmlTemplate = `
+        <div id="forecast-single" class="forecast-day">
+          <h4 class="forecast-title">${forecastDayString}</h4>
+          <h5 class="forecast-subtlite">${dayOfWeek}</h5>
+          <img src="./img/${icon}.png" id="conditions" class="img forecast"></img>
+          <div class="forecast-temp">
+            <ion-icon id="sunny-icn"  class="forecast-icon-small" name="sunny"></ion-icon>
+            <div id='forecast-day' class="sunrise">${Math.floor(day)}&deg;</div>
+            <ion-icon id="sunset-icn" class="forecast-icon-small"  name="moon"></ion-icon>
+            <div id='forecast-night' class="sunset">${Math.floor(
+              night
+            )}&deg;</div>
+          </div>
         </div>
-        </div>`;
+        `;
+
         forecastSectionEl.innerHTML += htmlTemplate;
       }
+    })
+    .then(() => {
+      // loader remover
+      loader.classList.remove("show-loader");
     });
 }
 

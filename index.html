@@ -15,11 +15,18 @@
   </head>
   <body>
     <div id="container" class="container">
+   
       <div class="app-body">
+        <div class="loader"> 
+          <div class="loader-content">
+            <div id="loader1"></div>
+          </div>
+        </div>
+        <!-- forecast switch buttons -->
         <div id="forecast-details-btn--left" class="forecast-details-btn"><ion-icon name="arrow-back-circle"></ion-icon></div>
         <div id="forecast-details-btn--right" class="forecast-details-btn"><ion-icon name="arrow-forward-circle"></ion-icon></div>
-        <section id="mainbox" class="mainbox flex">
-          <div class="testing"></div>
+        <!-- main box -->
+        <section id="mainbox" class="mainbox flex">      
           <h1>Weather App</h1>
           <!-- input error -->
           <div id="input-error" class="input-error"></div>
@@ -113,10 +120,9 @@
             <ion-icon id="air-icon"name="skull"></ion-icon>
           </div>
         </section>
-
+        <!-- forecast section  -->
         <section id="forecast" class="forecast-section hide-forecast">
-
-          <!-- day -->
+                 <!-- day -->
           <!-- <div id="forecast-single" class="forecast-day">
             <h4 class="forecast-title">Day + 1</h4>
             <img src="./img/10d.png" id="conditions" class="img forecast"></img>
@@ -131,7 +137,9 @@
         </section>
       </div>
         <footer>Copyrights M.A.</footer>
+     
       </div>
+ 
     </div>
   </body>
 
