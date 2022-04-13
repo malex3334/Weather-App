@@ -25,13 +25,34 @@ const airPollutionIcn = document.getElementById("air-icon");
 const testing = document.querySelector(".testing");
 const forecastSectionEl = document.getElementById("forecast");
 const loader = document.querySelector(".loader");
-
+let cityName;
 let lat;
 let lon;
 
 let apiKey = "fb574912b0999ba535af23dc7e4332dd";
 let units = "metric";
 
+// GET USER LOCATION AND PRINT WEATHER
+function success(pos) {
+  let location = pos.coords;
+  lat = location.latitude;
+  lon = location.longitude;
+  // console.log(location);
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+  )
+    .then((response) => {
+      if (!response.ok) throw new Error(`error: ${response.status}`);
+
+      return response.json();
+    })
+    .then((data) => {
+      getWeather(data.name);
+    });
+}
+navigator.geolocation.getCurrentPosition(success);
+
+// GET WEATHER FUNCTION
 function getWeather(city) {
   // loader animation
   loader.classList.add("show-loader");
@@ -60,93 +81,7 @@ function getWeather(city) {
     })
     .then(() => {
       // GET WEATHER BASED ON GEOCODE
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
-      )
-        .then((response) => {
-          if (!response.ok) throw new Error(`error: ${response.status}`);
-
-          return response.json();
-        })
-        .then((data) => {
-          // DESTRUCTURING OUTPUT
-
-          // const city = data.name;
-          const { temp, pressure, humidity, feels_like, temp_max, temp_min } =
-            data.main;
-          const { speed, deg } = data.wind;
-          const { country, sunrise, sunset } = data.sys;
-          const icon = data.weather[0].icon;
-          const timezone = data.timezone;
-
-          // PRINTING RESULTS TO THE DOM
-
-          tempEl.innerHTML = Math.round(temp) + "&deg;";
-          tempFeelEl.innerHTML = Math.round(feels_like) + "&deg;";
-          tempMinEl.innerHTML = Math.round(temp_max) + "&deg;";
-          tempMaxEl.innerHTML = Math.round(temp_min) + "&deg;";
-          nameEl.innerHTML = cityName;
-          windtSpeedEl.innerHTML = Math.round(speed) + "m/s";
-          windDirEl.style.transform = `rotate(${deg - 45}deg)`;
-          pressureEl.innerHTML = pressure + " hPa";
-          humEl.innerHTML = humidity + "%";
-          conditionsEl.src = `img/${icon}.png`;
-          document.body.style.backgroundImage = `url(' https://source.unsplash.com/1200x720/?${cityName}')`;
-          countryEl.innerHTML = country;
-
-          // DATES AND TIMEZONES
-          const myDate = new Date();
-          const newDate = new Date(myDate);
-          newDate.setHours(newDate.getHours());
-
-          const sunriseTZ = sunrise + timezone - 3600;
-          const sunsetTZ = sunset + timezone - 3600;
-
-          timeConverter(sunriseTZ, sunsetTZ);
-
-          function ticker() {
-            const myDate = new Date();
-            const newDate = new Date(myDate);
-            newDate.setHours(
-              myDate.getHours() - myDate.toTimeString().slice(12, 15)
-            );
-
-            newDate.setHours(newDate.getHours() + timezone / 60 / 60);
-
-            if (myDate.getHours() !== newDate.getHours()) {
-              clockEl.textContent = myDate.toTimeString().slice(0, 8);
-              localTimeEl.classList.remove("hide");
-              localClockEl.textContent =
-                "Local " + newDate.toTimeString().slice(0, 5);
-            } else {
-              localTimeEl.classList.add("hide");
-              clockEl.textContent = myDate.toTimeString().slice(0, 8);
-            }
-          }
-
-          var myTimer = window.setInterval(ticker, 1000);
-
-          // SET NEW TIMER
-
-          inputValue.addEventListener("keydown", (e) => {
-            if (e.key == "Enter") {
-              window.clearInterval(myTimer);
-            } else return;
-          });
-
-          submitBtn.addEventListener("click", () => {
-            window.clearInterval(myTimer);
-          });
-        });
-
-      // .catch((err) => {
-      //   console.log("City not found");
-      //   document.getElementById("input-error").innerHTML =
-      //     "Brak takiego miasta w bazie";
-      //   setTimeout(() => {
-      //     document.getElementById("input-error").innerHTML = "";
-      //   }, 3000);
-      // });
+      getData(lat, lon);
       // GET AIR POLLUTION DATA
       getAir();
       // RESET FORECAST DIV!
@@ -188,11 +123,90 @@ document
     forecastSectionEl.classList.toggle("hide-forecast");
   });
 
-let cityName = "";
-getWeather("wroclaw");
-
 // GET CEOLOCATION BY INPUTET
 
+// GET WEATHER BASED ON GEOLOCATION
+function getData(lat, lon) {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+  )
+    .then((response) => {
+      if (!response.ok) throw new Error(`error: ${response.status}`);
+
+      return response.json();
+    })
+    .then((data) => {
+      // DESTRUCTURING OUTPUT
+
+      // const city = data.name;
+      const { temp, pressure, humidity, feels_like, temp_max, temp_min } =
+        data.main;
+      const { speed, deg } = data.wind;
+      const { country, sunrise, sunset } = data.sys;
+      const icon = data.weather[0].icon;
+      const timezone = data.timezone;
+
+      // PRINTING RESULTS TO THE DOM
+
+      tempEl.innerHTML = Math.round(temp) + "&deg;";
+      tempFeelEl.innerHTML = Math.round(feels_like) + "&deg;";
+      tempMinEl.innerHTML = Math.round(temp_max) + "&deg;";
+      tempMaxEl.innerHTML = Math.round(temp_min) + "&deg;";
+      nameEl.innerHTML = cityName;
+      windtSpeedEl.innerHTML = Math.round(speed) + "m/s";
+      windDirEl.style.transform = `rotate(${deg - 45}deg)`;
+      pressureEl.innerHTML = pressure + " hPa";
+      humEl.innerHTML = humidity + "%";
+      conditionsEl.src = `img/${icon}.png`;
+      document.body.style.backgroundImage = `url(' https://source.unsplash.com/1200x720/?${cityName}')`;
+      countryEl.innerHTML = country;
+
+      // DATES AND TIMEZONES
+      const myDate = new Date();
+      const newDate = new Date(myDate);
+      newDate.setHours(newDate.getHours());
+
+      const sunriseTZ = sunrise + timezone - 3600;
+      const sunsetTZ = sunset + timezone - 3600;
+
+      timeConverter(sunriseTZ, sunsetTZ);
+
+      function ticker() {
+        const myDate = new Date();
+        const newDate = new Date(myDate);
+        newDate.setHours(
+          myDate.getHours() - myDate.toTimeString().slice(12, 15)
+        );
+
+        newDate.setHours(newDate.getHours() + timezone / 60 / 60);
+
+        if (myDate.getHours() !== newDate.getHours()) {
+          clockEl.textContent = myDate.toTimeString().slice(0, 8);
+          localTimeEl.classList.remove("hide");
+          localClockEl.textContent =
+            "Local " + newDate.toTimeString().slice(0, 5);
+        } else {
+          localTimeEl.classList.add("hide");
+          clockEl.textContent = myDate.toTimeString().slice(0, 8);
+        }
+      }
+
+      var myTimer = window.setInterval(ticker, 1000);
+
+      // SET NEW TIMER
+
+      inputValue.addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+          window.clearInterval(myTimer);
+        } else return;
+      });
+
+      submitBtn.addEventListener("click", () => {
+        window.clearInterval(myTimer);
+      });
+    });
+}
+// AIR POLLUTION FUNCTION
 function getAir() {
   fetch(
     `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`
