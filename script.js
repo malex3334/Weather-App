@@ -95,6 +95,11 @@ function getWeather(city) {
 
 submitBtn.addEventListener("click", () => {
   document.getElementById("input-error").innerHTML = "";
+  if (inputValue.value == "") {
+    document.getElementById("input-error").innerHTML =
+      "This field could not be empty";
+    return;
+  }
   cityName = inputValue.value;
   getWeather(cityName);
 });
@@ -104,6 +109,11 @@ submitBtn.addEventListener("click", () => {
 inputValue.addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
     document.getElementById("input-error").innerHTML = "";
+    if (inputValue.value == "") {
+      document.getElementById("input-error").innerHTML =
+        "This field could not be empty";
+      return;
+    }
     cityName = inputValue.value;
     getWeather(cityName);
   } else return;
