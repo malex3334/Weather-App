@@ -25,6 +25,7 @@ const airPollutionIcn = document.getElementById("air-icon");
 const testing = document.querySelector(".testing");
 const forecastSectionEl = document.getElementById("forecast");
 const loader = document.querySelector(".loader");
+const backgroundImageStyle = document.body.style;
 let cityName;
 let lat;
 let lon;
@@ -168,9 +169,18 @@ function getData(lat, lon) {
       pressureEl.innerHTML = pressure + " hPa";
       humEl.innerHTML = humidity + "%";
       conditionsEl.src = `img/${icon}.png`;
-      document.body.style.backgroundImage = `url(' https://source.unsplash.com/1200x720/?${cityName}')`;
-      countryEl.innerHTML = country;
 
+      // Check if bg image is avaliable and set background
+      const backgroundSource = `https://source.unsplash.com/1200x720/?${cityName}`;
+      fetch(backgroundSource).then((response) => {
+        if (response.url.includes("404")) {
+          return;
+        } else {
+          document.body.style.backgroundImage = `url(' https://source.unsplash.com/1200x720/?${cityName}')`;
+        }
+      });
+
+      countryEl.innerHTML = country;
       // DATES AND TIMEZONES
       const myDate = new Date();
       const newDate = new Date(myDate);
