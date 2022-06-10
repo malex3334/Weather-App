@@ -26,6 +26,7 @@ const testing = document.querySelector(".testing");
 const forecastSectionEl = document.getElementById("forecast");
 const loader = document.querySelector(".loader");
 const backgroundImageStyle = document.body.style;
+const bgLoader = document.querySelector("#bg-img-loader");
 let cityName;
 let lat;
 let lon;
@@ -172,13 +173,26 @@ function getData(lat, lon) {
 
       // Check if bg image is avaliable and set background
       const backgroundSource = `https://source.unsplash.com/1200x720/?${cityName}`;
-      fetch(backgroundSource).then((response) => {
-        if (response.url.includes("404")) {
-          return;
-        } else {
-          document.body.style.backgroundImage = `url(' https://source.unsplash.com/1200x720/?${cityName}')`;
-        }
-      });
+      // backgroundImageStyle.background = "black";
+      backgroundImageStyle.backgroundImage = `url(https://source.unsplash.com/1200x720/?${cityName})`;
+
+      const setBackground = function () {
+        backgroundImageStyle.backgroundImage = "grey";
+        bgLoader.classList.add("bg-active");
+        fetch(backgroundSource).then((response) => {
+          if (response.url.includes("404")) {
+            bgLoader.classList.remove("bg-active");
+            backgroundImageStyle.backgroundImage = `url(
+              "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
+            )`;
+          } else {
+            bgLoader.classList.remove("bg-active");
+            backgroundImageStyle.backgroundImage = `url(https://source.unsplash.com/1200x720/?${cityName})`;
+          }
+        });
+      };
+
+      setBackground();
 
       countryEl.innerHTML = country;
       // DATES AND TIMEZONES

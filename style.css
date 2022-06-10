@@ -10,12 +10,27 @@ html {
 }
 
 body {
-  background: url("https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80");
+  /* background: url("https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"); */
   background-size: cover;
   background-repeat: no-repeat;
   font-size: 1.6rem;
   color: rgba(255, 255, 255, 0.815);
   background-color: rgb(124, 124, 124);
+}
+
+.background-img-loader {
+  position: absolute;
+  display: none;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  /* text-align: center;
+  display: none;
+  margin-bottom: 1.5rem; */
+}
+
+.bg-active {
+  display: block;
 }
 
 button {
