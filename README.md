@@ -18,7 +18,9 @@ App with current weather around the world - basic and advanced parameters.
 
  - ⏰ **current local time**,
   
- - ☣ **current air pollution**
+ - ☣ **current air pollution**,
+ 
+ - 🖼 **background photo from current city (if it's in database)**.
   
  
 
